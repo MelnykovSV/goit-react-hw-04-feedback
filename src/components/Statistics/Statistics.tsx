@@ -1,3 +1,4 @@
+import React from 'react';
 import { IStatisticsProps } from '../../interfaces';
 import { Container } from './Statistics.styled';
 

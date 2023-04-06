@@ -1,3 +1,4 @@
+import React from 'react';
 import { IFeedbackOptionsProps } from '../../interfaces';
 import { Container } from './FeedbackOptions.styled';
 

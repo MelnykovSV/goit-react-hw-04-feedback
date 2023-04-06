@@ -1,3 +1,4 @@
+import React from 'react';
 import { ISectionProps } from '../../interfaces';
 import { Container } from './Section.styled';
 
