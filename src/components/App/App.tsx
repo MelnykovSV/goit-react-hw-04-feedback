@@ -1,24 +1,43 @@
-import React, { useState } from 'react';
+import { useReducer } from 'react';
 
 import { Statistics } from '../Statistics/Statistics';
 import { Section } from '../Section/Section';
 import { FeedbackOptions } from '../FeedbackOptions/FeedbackOptions';
-// import { IAppState } from '../../interfaces';
+import { IAppState } from '../../interfaces';
 import { ModernNormalize } from 'emotion-modern-normalize';
 import { Container } from './App.styled';
 
 export const App = () => {
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
+  const [{ good, neutral, bad }, dispatchFeedback] = useReducer(
+    feedbackReducer,
+    {
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    }
+  );
+
+  function feedbackReducer(
+    prevState: IAppState,
+    feedbackType: 'good' | 'neutral' | 'bad'
+  ) {
+    /// Нужна ли эта проверка? TS все равно же выдает ошибку, если сюда будет передаваться невалидное значение
+    if (
+      feedbackType === 'good' ||
+      feedbackType === 'neutral' ||
+      feedbackType === 'bad'
+    ) {
+      const nextState = { ...prevState };
+      nextState[feedbackType] += 1;
+      return nextState;
+    }
+
+    return prevState;
+  }
 
   const calcTotal = (): number => good + neutral + bad;
   const calcPositiveFeedback = (): string =>
     `${((good / calcTotal()) * 100).toFixed(0)}%`;
-
-  const handleGoodResponse = (): void => setGood(good + 1);
-  const handleNeutralResponse = (): void => setNeutral(neutral + 1);
-  const handleBadResponse = (): void => setBad(bad + 1);
 
   return (
     <Container>
@@ -27,11 +46,7 @@ export const App = () => {
       <h2> This is my Feedback Widget</h2>
 
       <Section title="Please leave feedback">
-        <FeedbackOptions
-          handlerGood={handleGoodResponse}
-          handlerNeutral={handleNeutralResponse}
-          handlerBad={handleBadResponse}
-        />
+        <FeedbackOptions handleFeedback={dispatchFeedback} />
       </Section>
       <Section title="Statistics">
         <Statistics

@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface IAppState {
   good: number;
   neutral: number;
@@ -10,9 +12,7 @@ export interface ISectionProps {
 }
 
 export interface IFeedbackOptionsProps {
-  handlerGood: React.MouseEventHandler;
-  handlerNeutral: React.MouseEventHandler;
-  handlerBad: React.MouseEventHandler;
+  handleFeedback: React.Dispatch<'good' | 'neutral' | 'bad'>;
 }
 
 export interface IStatisticsProps {
