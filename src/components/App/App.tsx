@@ -22,17 +22,9 @@ export const App = () => {
     feedbackType: 'good' | 'neutral' | 'bad'
   ) {
     /// Нужна ли эта проверка? TS все равно же выдает ошибку, если сюда будет передаваться невалидное значение
-    if (
-      feedbackType === 'good' ||
-      feedbackType === 'neutral' ||
-      feedbackType === 'bad'
-    ) {
-      const nextState = { ...prevState };
-      nextState[feedbackType] += 1;
-      return nextState;
-    }
-
-    return prevState;
+    return ['good', 'neutral', 'bad'].includes(feedbackType)
+      ? { ...prevState, [feedbackType]: prevState[feedbackType] + 1 }
+      : prevState;
   }
 
   const calcTotal = (): number => good + neutral + bad;
