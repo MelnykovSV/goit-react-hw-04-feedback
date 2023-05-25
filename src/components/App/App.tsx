@@ -7,8 +7,10 @@ import { IAppState } from '../../interfaces';
 import { ModernNormalize } from 'emotion-modern-normalize';
 import { Container } from './App.styled';
 
+import { IFeedbackAction } from '../../interfaces';
+
 export const App = () => {
-  const [{ good, neutral, bad }, dispatchFeedback] = useReducer(
+  const [{ good, neutral, bad }, feedbackDispatch] = useReducer(
     feedbackReducer,
     {
       good: 0,
@@ -19,12 +21,16 @@ export const App = () => {
 
   function feedbackReducer(
     prevState: IAppState,
-    feedbackType: 'good' | 'neutral' | 'bad'
+    feedbackAction: IFeedbackAction
   ) {
-    /// Нужна ли эта проверка? TS все равно же выдает ошибку, если сюда будет передаваться невалидное значение
-    return ['good', 'neutral', 'bad'].includes(feedbackType)
-      ? { ...prevState, [feedbackType]: prevState[feedbackType] + 1 }
-      : prevState;
+    if (typeof prevState[feedbackAction.type] !== 'undefined') {
+      return {
+        ...prevState,
+        [feedbackAction.type]:
+          prevState[feedbackAction.type] + feedbackAction.payload,
+      };
+    }
+    throw new Error(`Unsupported action type ${feedbackAction.type}`);
   }
 
   const calcTotal = (): number => good + neutral + bad;
@@ -38,7 +44,7 @@ export const App = () => {
       <h2> This is my Feedback Widget</h2>
 
       <Section title="Please leave feedback">
-        <FeedbackOptions handleFeedback={dispatchFeedback} />
+        <FeedbackOptions feedbackDispatch={feedbackDispatch} />
       </Section>
       <Section title="Statistics">
         <Statistics

@@ -2,14 +2,16 @@ import React from 'react';
 import { IFeedbackOptionsProps } from '../../interfaces';
 import { Container } from './FeedbackOptions.styled';
 
-export const FeedbackOptions = ({ handleFeedback }: IFeedbackOptionsProps) => {
+export const FeedbackOptions = ({
+  feedbackDispatch,
+}: IFeedbackOptionsProps) => {
   return (
     <Container>
       <button
         type="button"
         className="button-good"
         onClick={() => {
-          handleFeedback('good');
+          feedbackDispatch({ type: 'good', payload: 1 });
         }}
       >
         Good
@@ -18,7 +20,7 @@ export const FeedbackOptions = ({ handleFeedback }: IFeedbackOptionsProps) => {
         type="button"
         className="button-neutral"
         onClick={() => {
-          handleFeedback('neutral');
+          feedbackDispatch({ type: 'neutral', payload: 1 });
         }}
       >
         Neutral
@@ -27,7 +29,7 @@ export const FeedbackOptions = ({ handleFeedback }: IFeedbackOptionsProps) => {
         type="button"
         className="button-bad"
         onClick={() => {
-          handleFeedback('bad');
+          feedbackDispatch({ type: 'bad', payload: 1 });
         }}
       >
         Bad

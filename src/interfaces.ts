@@ -12,7 +12,7 @@ export interface ISectionProps {
 }
 
 export interface IFeedbackOptionsProps {
-  handleFeedback: React.Dispatch<'good' | 'neutral' | 'bad'>;
+  feedbackDispatch: React.Dispatch<IFeedbackAction>;
 }
 
 export interface IStatisticsProps {
@@ -21,4 +21,9 @@ export interface IStatisticsProps {
   bad: number;
   total: number;
   positiveFeedback: string;
+}
+
+export interface IFeedbackAction {
+  type: 'good' | 'neutral' | 'bad';
+  payload: number;
 }
